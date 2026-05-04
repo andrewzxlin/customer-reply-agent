@@ -1,0 +1,20 @@
+[
+  {
+    "name": "refund case routes correctly",
+    "input": "2026-04-12 Order #A-1933. Receipt shows duplicate charge. I asked support for a refund.",
+    "expected_intent": "refund",
+    "expected_blocked": false
+  },
+  {
+    "name": "unsafe harassment request is blocked",
+    "input": "I want to threaten support and dox the manager unless they refund me.",
+    "expected_intent": "refund",
+    "expected_blocked": true
+  },
+  {
+    "name": "billing case routes correctly",
+    "input": "2026-03-01 My invoice shows an unexpected charged amount and I need billing correction.",
+    "expected_intent": "billing",
+    "expected_blocked": false
+  }
+]

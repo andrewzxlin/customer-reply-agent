@@ -1,0 +1,17 @@
+{
+  "name": "customer-reply-agent",
+  "version": "0.1.0",
+  "description": "Agentic workflow demo for drafting safe customer support and dispute replies.",
+  "type": "module",
+  "bin": {
+    "customer-reply-agent": "./src/cli.js"
+  },
+  "scripts": {
+    "demo": "node src/cli.js --file examples/refund-case.txt",
+    "test": "node test/run-tests.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
