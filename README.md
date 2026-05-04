@@ -1,5 +1,7 @@
 # Customer Reply Agent
 
+[![Test](https://github.com/andrewzxlin/customer-reply-agent/actions/workflows/test.yml/badge.svg)](https://github.com/andrewzxlin/customer-reply-agent/actions/workflows/test.yml)
+
 一個用來展示 **Agentic Workflow / LLM App Engineering** 能力的客服與申訴回覆專案。它會把使用者提供的客服對話、退款爭議或帳單問題整理成意圖分類、證據時間線、guardrail 檢查、回覆草稿與人工審核清單。
 
 > 第一版不依賴外部 LLM API，使用 deterministic workflow，確保 clone 後能直接跑 demo 和 tests。之後可以把 routing、summary、draft generator 替換成真實 LLM provider。
