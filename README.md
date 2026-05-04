@@ -2,32 +2,43 @@
 
 [![Test](https://github.com/andrewzxlin/customer-reply-agent/actions/workflows/test.yml/badge.svg)](https://github.com/andrewzxlin/customer-reply-agent/actions/workflows/test.yml)
 
-一個用來展示 **Agentic Workflow / LLM App Engineering** 能力的客服與申訴回覆專案。它會把使用者提供的客服對話、退款爭議或帳單問題整理成意圖分類、證據時間線、guardrail 檢查、回覆草稿與人工審核清單。
+把客服對話、退款爭議、帳單問題整理成一份可以人工審核後送出的回覆包。
 
-> 第一版不依賴外部 LLM API，使用 deterministic workflow，確保 clone 後能直接跑 demo 和 tests。之後可以把 routing、summary、draft generator 替換成真實 LLM provider。
+你貼上事件紀錄後，這個工具會幫你產出：
 
-## 這個專案展示什麼
+- 問題類型：退款、取消訂閱、帳單、物流或一般問題
+- 事件摘要
+- 證據時間線
+- 缺少哪些資訊
+- 安全檢查結果
+- 溫和、強硬、最後通知三種回覆草稿
+- 人工送出前的確認清單
 
-- Intent routing
-- Evidence timeline extraction
-- Guardrails
-- Tone-controlled reply drafts
-- Human-in-the-loop approval package
-- Failure modes
-- Evals / regression tests
-- 中文文件與架構說明
+## 這個作品完成的學習拼圖
 
-## Workflow
+- **Intent routing**：先判斷案件類型，再決定後續處理策略。
+- **Evidence extraction**：把雜亂對話整理成時間線、證據與缺漏資訊。
+- **Guardrails**：阻擋威脅、騷擾，並在法律/證據不足時要求人工審核。
+- **Human-in-the-loop**：AI 只產生草稿與檢查清單，最後送出仍由人決定。
+- **安全輸出設計**：同時產生不同語氣版本，但不讓語氣蓋過安全邊界。
+
+## 為什麼這是 Agentic Workflow 的重要部分
+
+客服與申訴場景不能只靠一段 prompt 直接產生回覆。它需要先理解意圖、整理證據、檢查風險，最後才生成草稿。
+
+這個專案示範的是 **safe reply workflow**：
 
 ```text
 Raw conversation / dispute notes
-  -> Intent Router
-  -> Evidence & Timeline Extractor
-  -> Guardrail Checks
-  -> Draft Generator
-  -> Human Approval Package
+  -> Intent Router：判斷案件類型
+  -> Evidence & Timeline Extractor：整理日期、訂單、收據、客服紀錄
+  -> Guardrail Checks：阻擋威脅、騷擾、法律建議越界
+  -> Draft Generator：產生不同語氣的回覆草稿
+  -> Human Approval Package：送出前交給人確認
   -> Final Report
 ```
+
+真正實用的 agentic workflow 不是把人排除，而是把 AI 放在「整理、檢查、草稿」的位置，讓人負責最後判斷。
 
 ## 快速開始
 
@@ -51,23 +62,7 @@ node src/cli.js --file examples/refund-case.txt --format json
 node src/cli.js --file examples/unsafe-case.txt
 ```
 
-## 測試
-
-```bash
-npm test
-```
-
-測試涵蓋：
-
-- 空輸入防呆
-- refund intent routing
-- unsafe harassment block
-- markdown report sections
-- `evals/eval_cases.json` regression cases
-
-## 範例輸出摘要
-
-輸入：
+## 範例輸入
 
 ```text
 2026-04-12 I ordered a yearly subscription. Order #A-1933.
@@ -88,6 +83,20 @@ I want a refund for the duplicate charge and written confirmation that the subsc
 - Human approval checklist
 - Failure modes
 
+## 測試
+
+```bash
+npm test
+```
+
+測試涵蓋：
+
+- 空輸入防呆
+- refund intent routing
+- unsafe harassment block
+- markdown report sections
+- `evals/eval_cases.json` regression cases
+
 ## 目前限制
 
 - 沒有直接呼叫 LLM API。
@@ -102,9 +111,3 @@ I want a refund for the duplicate charge and written confirmation that the subsc
 - 加入 traces、latency、cost logging。
 - 擴充 eval cases。
 - 做一個 Web UI 比較不同語氣草稿。
-
-## 履歷描述
-
-可以放在履歷上的 bullet：
-
-> Built a customer reply agent workflow that routes dispute intents, extracts evidence timelines, applies safety guardrails, generates tone-controlled response drafts, and prepares human approval packages with regression evals and documented failure modes.
